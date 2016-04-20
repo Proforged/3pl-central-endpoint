@@ -1,15 +1,18 @@
-FROM ruby:2.2
-MAINTAINER Dave Nunez <dnunez24@gmail.com>
+FROM ruby:2.3.0
 
-ENV RACK_ENV development
-RUN mkdir -p /srv/www/app
-WORKDIR /tmp
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
-RUN bundle install
-COPY . /srv/www/app
-WORKDIR /srv/www/app
+RUN gem install bundler
+RUN bundle config --global frozen 1
 
-EXPOSE 9292
-VOLUME /srv/www/app
-CMD foreman start
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY ./Gemfile /usr/src/app/Gemfile
+COPY ./Gemfile.lock /usr/src/app/Gemfile.lock
+
+RUN bundle install --without development test --jobs=20
+
+COPY . /usr/src/app
+
+EXPOSE 3000
+
+CMD ["foreman","start"]
