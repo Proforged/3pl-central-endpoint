@@ -1,5 +1,5 @@
 source 'https://www.rubygems.org'
-ruby '2.2.2'
+ruby '2.3.0'
 
 gem 'sinatra'
 gem 'endpoint_base', github: 'spree/endpoint_base'
@@ -17,5 +17,5 @@ end
 
 group :production do
   gem 'foreman'
-  gem 'puma'
+  gem 'unicorn'
 end
